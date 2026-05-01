@@ -1,0 +1,15 @@
+{
+  "name": "the-corner-pantry-fullstack",
+  "version": "1.0.0",
+  "description": "Fullstack grocery app",
+  "main": "backend/server.js",
+  "scripts": {
+    "install-all": "npm install && cd backend && npm install && cd ../frontend && npm install",
+    "build": "cd frontend && npm install && npm run build",
+    "start": "cd backend && node server.js",
+    "render-postbuild": "npm run build && cd backend && npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

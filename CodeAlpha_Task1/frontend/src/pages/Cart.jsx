@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { Trash2, ArrowRight, MapPin, CheckCircle, Plus, Minus, User } from 'lucide-react';
+import API_URL from '../api';
 import { useNavigate, Link } from 'react-router-dom';
 
 const Cart = () => {
@@ -19,7 +20,7 @@ const Cart = () => {
     }, [token]);
 
     const fetchCart = () => {
-        fetch('http://localhost:5000/api/cart', {
+        fetch(`${API_URL}/api/cart`, {
             headers: { 'Authorization': `Bearer ${token}` }
         })
         .then(res => res.json())
@@ -28,7 +29,7 @@ const Cart = () => {
     };
 
     const remove = (cartId) => {
-        fetch(`http://localhost:5000/api/cart/${cartId}`, {
+        fetch(`${API_URL}/api/cart/${cartId}`, {
             method: 'DELETE',
             headers: { 'Authorization': `Bearer ${token}` }
         })
@@ -38,7 +39,7 @@ const Cart = () => {
 
     const updateQty = (cartId, newQty) => {
         if (newQty < 1) { remove(cartId); return; }
-        fetch(`http://localhost:5000/api/cart/${cartId}`, {
+        fetch(`${API_URL}/api/cart/${cartId}`, {
             method: 'PUT',
             headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({ quantity: newQty })
@@ -59,7 +60,7 @@ const Cart = () => {
 
     const handleCheckout = () => {
         if (!validate()) return;
-        fetch('http://localhost:5000/api/orders', {
+        fetch(`${API_URL}/api/orders`, {
             method: 'POST',
             headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
             body: JSON.stringify({ address: `${fullName}, ${address}`, total_amount: total })

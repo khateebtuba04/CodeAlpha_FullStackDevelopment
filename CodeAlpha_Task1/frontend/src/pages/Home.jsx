@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import API_URL from '../api';
 import { AuthContext } from '../context/AuthContext';
 import { Clock, Truck, ShieldCheck } from 'lucide-react';
 
@@ -11,7 +12,7 @@ const Home = () => {
     const selectedCategory = searchParams.get('category');
 
     useEffect(() => {
-        fetch('http://localhost:5000/api/products')
+        fetch(`${API_URL}/api/products`)
             .then(res => res.json())
             .then(data => setProducts(data))
             .catch(console.error);
@@ -26,7 +27,7 @@ const Home = () => {
             showToast('Please sign in first', true);
             return;
         }
-        fetch('http://localhost:5000/api/cart/add', {
+        fetch(`${API_URL}/api/cart/add`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
