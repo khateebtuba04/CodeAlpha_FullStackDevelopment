@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wavely</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="auth-box" id="login-box">
+      <div class="auth-logo"><h1>Wavely</h1></div>
+      <form onsubmit="handleLogin(event)">
+        <input type="email" id="l-email" placeholder="Email" required />
+        <input type="password" id="l-pass" placeholder="Password" required />
+        <div class="auth-error" id="l-err"></div>
+        <button class="btn-blue" type="submit" id="l-btn">Log In</button>
+      </form>
+      <div class="auth-divider">OR</div>
+      <div class="auth-small">Don't have an account? <a href="#" onclick="toggle()">Sign up</a></div>
+    </div>
+
+    <div class="auth-box" id="reg-box" style="display:none">
+      <div class="auth-logo"><h1>Wavely</h1></div>
+      <p style="text-align:center;color:#8e8e8e;font-size:17px;font-weight:600;margin-bottom:18px;line-height:1.4">Sign up to see photos and videos from your friends.</p>
+      <form onsubmit="handleRegister(event)">
+        <input type="text" id="r-user" placeholder="Username" required />
+        <input type="email" id="r-email" placeholder="Email" required />
+        <input type="password" id="r-pass" placeholder="Password" required />
+        <div class="auth-error" id="r-err"></div>
+        <button class="btn-blue" type="submit" id="r-btn">Sign Up</button>
+      </form>
+      <div class="auth-small">By signing up, you agree to our Terms &amp; Privacy Policy.</div>
+    </div>
+
+    <div class="auth-link-box">
+      <span id="toggle-msg">Don't have an account? <a href="#" onclick="toggle()">Sign up</a></span>
+    </div>
+  </div>
+
+  <script>
+    const API = 'http://localhost:3001/api';
+    if (localStorage.getItem('token')) location.href = 'feed.html';
+
+    let onLogin = true;
+    function toggle() {
+      onLogin = !onLogin;
+      document.getElementById('login-box').style.display = onLogin ? 'block' : 'none';
+      document.getElementById('reg-box').style.display = onLogin ? 'none' : 'block';
+      document.getElementById('toggle-msg').innerHTML = onLogin
+        ? `Don't have an account? <a href="#" onclick="toggle()">Sign up</a>`
+        : `Have an account? <a href="#" onclick="toggle()">Log in</a>`;
+    }
+
+    async function handleLogin(e) {
+      e.preventDefault();
+      const btn = document.getElementById('l-btn');
+      btn.disabled = true; btn.textContent = 'Logging in...';
+      const r = await fetch(`${API}/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email: document.getElementById('l-email').value, password: document.getElementById('l-pass').value }) });
+      const d = await r.json();
+      if (d.token) { localStorage.setItem('token', d.token); localStorage.setItem('username', d.username); localStorage.setItem('userId', d.id); location.href = 'feed.html'; }
+      else { document.getElementById('l-err').textContent = d.error; btn.disabled = false; btn.textContent = 'Log In'; }
+    }
+
+    async function handleRegister(e) {
+      e.preventDefault();
+      const btn = document.getElementById('r-btn');
+      btn.disabled = true; btn.textContent = 'Signing up...';
+      const r = await fetch(`${API}/register`, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ username: document.getElementById('r-user').value, email: document.getElementById('r-email').value, password: document.getElementById('r-pass').value }) });
+      const d = await r.json();
+      if (d.token) { localStorage.setItem('token', d.token); localStorage.setItem('username', d.username); localStorage.setItem('userId', d.id); location.href = 'feed.html'; }
+      else { document.getElementById('r-err').textContent = d.error; btn.disabled = false; btn.textContent = 'Sign Up'; }
+    }
+  </script>
+</body>
+</html>

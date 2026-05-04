@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wavely — Profile</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app-shell">
+  <!-- Left Nav -->
+  <nav class="left-nav">
+    <div class="nav-logo">Wavely</div>
+    <div class="nav-links">
+      <a href="feed.html" class="nav-item">
+        <span class="nav-icon">🏠</span><span>Home</span>
+      </a>
+      <a href="#" class="nav-item" id="nav-profile-link">
+        <span class="nav-icon">👤</span><span>Profile</span>
+      </a>
+    </div>
+    <button class="nav-item nav-logout" onclick="logout()">
+      <span class="nav-icon">🚪</span><span>Logout</span>
+    </button>
+  </nav>
+
+  <!-- Profile Content -->
+  <div class="page-content" style="display:block">
+    <div class="profile-page-wrap">
+
+      <!-- Profile Header -->
+      <div class="profile-header" id="profile-header">
+        <div class="profile-big-avatar" id="p-avatar"></div>
+        <div class="profile-details">
+          <div class="profile-top-row">
+            <h2 id="p-username"></h2>
+            <div id="p-actions"></div>
+          </div>
+          <div class="profile-stats-row">
+            <span><strong id="s-posts">0</strong> posts</span>
+            <span><strong id="s-followers">0</strong> followers</span>
+            <span><strong id="s-following">0</strong> following</span>
+          </div>
+          <div class="profile-bio-text" id="p-bio"></div>
+        </div>
+      </div>
+
+      <!-- Bio Edit (own profile) -->
+      <div class="bio-edit-box" id="bio-edit-box" style="display:none">
+        <h4>Edit Bio</h4>
+        <textarea id="bio-input" rows="3" placeholder="Write a caption…"></textarea>
+        <div style="margin-top:8px;text-align:right">
+          <button class="btn-ig-primary" onclick="saveBio()">Save</button>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="profile-tabs">
+        <div class="profile-tab active">
+          <span>⊞</span> POSTS
+        </div>
+      </div>
+
+      <!-- Grid -->
+      <div class="profile-grid" id="profile-grid"></div>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+  requireAuth();
+  document.getElementById('nav-profile-link').href = `profile.html?user=${me()}`;
+  initProfilePage();
+</script>
+</body>
+</html>
