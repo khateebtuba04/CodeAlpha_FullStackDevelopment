@@ -1,0 +1,9 @@
+{
+  "name": "nexlink",
+  "version": "1.0.0",
+  "description": "NexLink – Real-Time Video Conferencing & Collaboration",
+  "scripts": {
+    "dev:server": "node server/index.js",
+    "dev:client": "npm run dev --prefix client"
+  }
+}
